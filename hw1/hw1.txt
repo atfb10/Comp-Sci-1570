@@ -1,0 +1,89 @@
+// Programmer: Adam Forestier       Date: 08/30/18
+// File: hw1.txt                    Section: 1E
+// Purpose: To algorithmically explain how to play tic-tac-toe, 
+//          determine the prime factorization of any positive integer n, n > 1,
+//          and determine the most economically sensible way to recycle in Chickendale.
+
+
+Algorithm #1: tic tac toe
+
+1. Pick up the pencil
+2. Using the pencil, draw two parallel, horizontal lines in the middle of the page.
+3. Draw two parallel, vertical lines through the horizontal lines, creating a 3X3 playing surface.
+4. Between you and your opponent, select either "X" or "O" to represent you on the playing surface.
+5. Begin Game
+    a. If you select X, make the first move, drawing an X on one of the nine playing spaces.
+    b. If you select O, wait for your opponent to make the first move, then draw an O on one of the remaining 8 spaces.
+6. Continue alternating, with the "X" player going first, followed by the "O" player.
+7. Game Conclusion
+    a. If player "X" draws 3 X's in a row vertically, horizontally, or diagonally before the "O" player can draw 3 O's in a row,
+       then player X wins the game.
+    b. If player "O" draws 3 O's in a row vertically, horizontally, or diagonally before the "X" player can draw 3 X's in a row,
+        then player O wins the game.
+    c. Else, if all 9 spaces are filled with neither playing obtaining a vertical, horizontal, or diagonal line,
+        then the game ends in a draw. Move to step 8.
+8. Restart the Game
+    a.  If you still are holding the pencil, repeat steps 2 through 7 until a winner is determined.
+    b.  If you have set down the pencil, repeat steps 1 through 7 until a winner is determined.
+
+
+Algorithm #2: determine the prime factorization of any positive integer n, n > 1.
+
+1. Observe the original number.
+2. Create array of prime numbers less than 10; this consists of 2, 3, 5, and 7 respectively.
+3. Divide the original number by the first number in the array (2).
+    a. If the number is divisible by two, meaning no remainder, two is one of the factors.
+        i. Factor the quotient by dividing by one of the prime numbers in the array, (2, 3, 5, 7), only if the quotient has no remainder.
+        ii. Repeat the sub-step i, until only prime numbers remain.   // Example: 18 = 2 * 3 * 3
+    b. Else move to step 4.
+4. If the original number is not divisible by 2, attempt dividing by each number remaining in the array. (3, 5, 7). 
+    a. If the number is not divisible by 2, 3, 5, or 7; then it is a prime number itself and it has been 
+        factored as far as possible.    // Example: 17 = 1 * 17
+    b. If the number is divisible by 3, meaning no remainder, three is one of the factors.
+        i. Factor the quotient by dividing by one of the prime numbers in the array, (2, 3, 5, 7), only if the quotient has no remainder.
+        ii. Repeat the substep i, until only prime numbers remain. Meaning the number is not able 
+            to be divided evenly by 2, 3, 5, 7   // Example: 57 = 3 * 19
+    c. Else, for each remaining number in the array (5, 7), repeat 4b for 5 and 7, as well as substeps i and ii under 4b.
+
+
+Algorithm #3: Chickendale road-side recycling
+
+// Only perform step 1, only once. Perform when you first arrive in town. 
+1. Upon moving to Chickendale wait for the recycle truck to come your first week, placing all used items in the trash pile.
+2. When the truck comes to your house ask the incentives.
+    a. How much money will be given for each unit? (glass, paper, metal, and coffee grounds)
+        i. Assign best paying unit the variable name "best".
+        ii. Assign second-best paying unit the variable name "second".
+        iii. Assign third-best paying unit the variable name "third".
+        iv. Assign fourth-best paying unit the variable name "fourth".
+    b. How many units you are allowed you are allowed to recycle that coming week? Assign this the variable name "max".
+3. Take the first item off of the trash pile.
+    a. If it is metal, put it in a seperate pile. (metal pile) 
+    b. If it is paper, put in a seperate pile. (paper pile)
+    c. If it is glass, put in a seperate pile. (glass pile) 
+    d. If it is coffee grounds, put in seperate pile. (coffee grounds pile)
+    e. If not recyclable, leave in the trash pile.
+4. Repeat step 3 until all that remains in the trash pile is not recyclable (trash).
+5. Repeat steps 3 and 4 for all 7 mornings of the week.
+6. On the day the recycling truck arrives, count your units per recycling material from the seperated piles.
+7. Add the units per material in each respective pile. 
+8. Compare your individual recyclable material units, such as paper, to max. 
+9. Add the total of of the four different unit piles and assign this value the variable name total.
+10. Compare total to the max amount.
+11. Maximize your revenue.
+    a. If total units is equal to zero, recycle nothing.
+    b. If total units is less than or equal to max amount, recycle all of your recyclables.
+    c. Else, recycle the highest paying recyclables first.
+        i. If the amount of best units is greater than or equal to max, recycle the max unit amount of best.
+        ii. If the amount of best units is less than max, recycle the amount of second units in addition to 
+            best to meet max amount. 
+        iii. If the amount of best units plus amount of second units is less than max units, recycle the 
+             amount of third units in addition to best and second to meet max amount.
+        iv. If the amount of best units plus amount of second units plus the amount of third units is less
+            than max units, recycle the amount of fourth units in addition to best, second and third to meet 
+            max amount.
+10. Repeat steps 2 through 9 until moving out of Chickendale.
+
+
+
+
