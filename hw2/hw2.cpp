@@ -45,14 +45,8 @@ int main()
     // Calculations based upon user input
 
     // check if user ordered at least one of each item
-    if (burgerCount == 0 || fryCount == 0 || milkshakeCount == 0)
-    {
-        chanceOfHeartAttack =(burgerCount + fryCount) * (static_cast<float>(milkshakeCount) / (queueLineLength + 1));
-    }     
-    else
-    {
-      chanceOfHeartAttack = (burgerCount + fryCount) * (static_cast<float>(milkshakeCount) / (queueLineLength + 1)) + AQF;
-    }
+    chanceOfHeartAttack =(burgerCount + fryCount) * (static_cast<float>(milkshakeCount) / (queueLineLength + 1));
+    chanceOfHeartAttack = (burgerCount + fryCount) * (static_cast<float>(milkshakeCount) / (queueLineLength + 1)) + AQF * (burgerCount >= 1) * (fryCount >= 1) * (milkshakeCount >= 1);
 
     /*
      Calculate marathon plus marathon remainder, miles under 26, to save user's life.
@@ -68,17 +62,8 @@ int main()
     cout << "\t" << fryCount << " fries" << endl;
     cout << "\t" << milkshakeCount << " milkshakes" << endl;
     cout << "\t" << queueLineLength << " people in queue" << endl;
-
-    // Check if user ate anything at Krusty Burger
-    if (burgerCount == 0 && fryCount == 0 && milkshakeCount == 0) 
-    {
-        cout << "\nYou have elected to not eat anything at Krusty Burger. Your cardiovascular health thanks you." << endl;
-    } 
-    else 
-    {
-        cout << "\nYour chance of heart attack is " << chanceOfHeartAttack << "%." << endl;
-        cout << "\nYou need to run " << marathonCount << " marathons plus " << milesAfterMarathons << " miles to save your life!" << endl;
-    }   
+    cout << "\nYour chance of heart attack is " << chanceOfHeartAttack << "%." << endl;
+    cout << "\nYou need to run " << marathonCount << " marathons plus " << milesAfterMarathons << " miles to save your life!" << endl;  
 
     // Exit message
     cout << "\nThank you for using the Krusty Burger Heart Risk Calculator, have a nice day!\n" << endl;
