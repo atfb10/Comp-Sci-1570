@@ -68,24 +68,6 @@ int main()
     {
       // handle incorrect user entry
 
-      // user enters more than three digtis 
-      if(codeDigits > 999)
-      {
-        cout << "\nError: Digits must be between 100 - 333. " 
-        << "Please enter again: ";
-        cin >> codeDigits;
-
-        // break loop if user enters exit code
-        if(codeDigits == 000)
-        {
-          break;
-        }
-
-        pattyCount = codeDigits/100;
-        baconOunces = (codeDigits%100)/10;
-        pickleCount = codeDigits % 10;
-      }
-
       // user does not enter patty
       if(pattyCount <= 0)
       {
@@ -146,6 +128,24 @@ int main()
       {
         cout << "\nError: Enter again, with only 0, 1, 2 or 3 in third"
         << " digit place: ";
+        cin >> codeDigits;
+
+        // break loop if user enters exit code
+        if(codeDigits == 000)
+        {
+          break;
+        }
+
+        pattyCount = codeDigits/100;
+        baconOunces = (codeDigits%100)/10;
+        pickleCount = codeDigits % 10;
+      }
+
+      // user enters wrong amount of digits
+      if(codeDigits > 999 || codeDigits < 100)
+      {
+        cout << "\nError: Digits must be between 100 - 333. " 
+        << "Please enter again: ";
         cin >> codeDigits;
 
         // break loop if user enters exit code
