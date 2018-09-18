@@ -19,16 +19,37 @@ int main()
   const short DECIMAL_POWER = 10;
   const short MIN_INT = 0;
   const short MAX_INT = 99999;
-  const short MIN_BASE = 2;
+  const short MIN_BASE = 2; 
   const short MAX_BASE = 9;
   const short MAX_WHILE_COUNTER = 2;
   const short FIND_MAX_INDEX = -1; 
+
+  /*
+  Consts for dividing and modulating digit values
+  Five is for the left most digit and decreases from left to right;
+  meaning ONE_DIGIT const is right most digit
+  */
+  const short FIVE_DIGIT_DIVIDENT = 10000;
+  const short FOUR_DIGIT_MOD = 10000;
+  const short FOUR_DIGIT_DIVIDENT = 1000;
+  const short THREE_DIGIT_MOD = 10;
+  const short THREE_DIGIT_DIVIDENT = 100;
+  const short TWO_DIGIT_MOD = 100;
+  const short TWO_DIGIT_DIVIDENT = 10;
+  const short ONE_DIGIT_MOD = 10;
 
   // declare variables
   bool quit = false;
   bool posIntDeclared = false; // ensure user has done option 1 first
   bool intBaseDeclared = false; // check user has done option 2, before 3 or 4
   bool isBaseNum = true; // check if user entered int, is a base num of n
+  short positiveIntInput = 0;
+  short numberBase = 0;
+  short tenThousandsDigit = 0;
+  short thousandsDigit = 0;
+  short hundredsDigit = 0;
+  short tensDigit = 0;
+  short onesDigit = 0;
   short menuChoice = 0;
   short baseTenNum = 0;
   short decimalValue = 0;
@@ -36,16 +57,7 @@ int main()
   short i = 0; // incrementor for counting loops
   short posIntLen = 0; // will hold length of user entered string for option 1
   short posIntMaxInd = 0; // max index number for string
-
-  // assign variable for option 1 as string so it may be looped through
-  string positiveInt = "";
-  
-  /*
-  number base could be int as well, this just makes more sense logically
-  to me because number base will be compared to each character of the 
-  positive integer user entry later in the program
-  */
-  char numberBase = '0'; 
+ 
 
   // Start of program
 
@@ -79,18 +91,18 @@ int main()
       {
         // ask user to enter non-negative integer less than 5 digits long
         cout << "Please enter a positive integer less than 5 digits long: ";
-        cin >> positiveInt;
+        cin >> positiveIntInput;
 
         /*
         Check if user has entry error. If so, give them two more chances
         to correct their mistake before sending them back to the menu.
         This adds up to 3 total attempts
         */ 
-        while((positiveInt < MIN_INT || positiveInt > MAX_INT) && 
+        while(positiveIntInput < MIN_INT && positiveIntInput > MAX_INT && 
         counter < MAX_WHILE_COUNTER)
         {
           cout << "Error. Only enter positive numbers less than 9999: ";
-          cin >> positiveInt;
+          cin >> positiveIntInput;
           counter++;
         }
 
@@ -126,7 +138,7 @@ int main()
           to correct their mistake before sending them back to the menu.
           This adds up to 3 total attempts
           */ 
-          while((numberBase < MIN_BASE|| numberBase >= MAX_BASE) && 
+          while(numberBase < MIN_BASE && numberBase > MAX_BASE && 
           counter < MAX_WHILE_COUNTER)
           {
             cout << "Error. Enter only only number bases 2 through 9: ";
@@ -156,32 +168,50 @@ int main()
           << "option 3." << endl;
         }
         else
-        {
-          // assign string length
-          posIntLen = positiveInt.length();
+        {                    
+          /*
+          find each digit value (left to right)
+          This works because, even if there are less than 5 digits, the 
+          result will be less than one. Because these variables are of 
+          the short type, the decimal will be dropped and will result
+          for said variable will be zero
+          */
+          tenThousandsDigit = positiveIntInput / FIVE_DIGIT_DIVIDENT;
+          thousandsDigit = (positiveIntInput % FOUR_DIGIT_MOD) / 
+          FOUR_DIGIT_DIVIDENT;
+          hundredsDigit = (positiveIntInput / THREE_DIGIT_DIVIDENT)
+          % THREE_DIGIT_MOD;
+          tensDigit = (positiveIntInput % TWO_DIGIT_MOD) / 
+          TWO_DIGIT_DIVIDENT;
+          onesDigit = positiveIntInput % ONE_DIGIT_MOD;
 
           /*
-          loop through integer string. If any character in string is 
-          greater than or  equal to user entered base number n from option 2, 
-          change isBaseNum to false
+          check to make sure all of digits are less than the base number n
+          done as nested if for readability and to not exceed column 80
           */
-          for(i = 0; i < posIntLen; i++)
+          if(tenThousandsDigit < numberBase && thousandsDigit < numberBase)
           {
-            if(positiveInt[i] >= numberBase);
-              isBaseNum = false;
+            if(hundredsDigit < numberBase && tensDigit < numberBase)
+            {
+              if(onesDigit < numberBase)
+              {
+                // set isBaseNum to true if all criteria are met
+                isBaseNum = true;
+              }
+            }
           }
 
-          // tell user number is valid base n number is isBaseNum is true]
+          // tell user number is valid base n number is isBaseNum is true
           if(isBaseNum)
           {
-            cout << positiveInt << " is a valid base " << numberBase 
+            cout << positiveIntInput << " is a valid base " << numberBase 
             << " number." << endl;      
           }
 
           // otherwise, tell them it is not valid
           else
           {
-            cout << positiveInt << " is NOT a valid base " << numberBase
+            cout << positiveIntInput << " is NOT a valid base " << numberBase
             << " number." << endl;
           }
         }
@@ -200,23 +230,16 @@ int main()
           cout << "Error. Option 1, then option 2 must be completed prior to "
           <<" option 4." << endl;
         }
+        // if option 1 and 2 are done, find the number's value in base ten
         else
         {
-          // assign string length
-          posIntLen = positiveInt.length();
+          // add up the values of all digits taken to power of ten
+          baseTenNum = pow(10, tenThousandsDigit) + pow(10, thousandsDigit) +
+          pow(10, hundredsDigit) + pow(10, tensDigit) + pow(10, onesDigit);
 
-          // assign highest index of string
-          posIntMaxInd = posIntLen - FIND_MAX_INDEX;
-
-          // loop through array from left to right
-          for(i = posIntMaxInd; i >= 0; i--)
-          {
-            /*
-            base 10 value is the sum of values of each index in
-            the user entered integer string, to the 10th power
-            */
-            decimalValue += pow(DECIMAL_POWER, positiveInt[i]);
-          }
+          // tell user the value
+          cout << "The number " << positiveIntInput << " = " << baseTenNum 
+          << " in base 10!" << endl;
         }
 
         // return to menu
