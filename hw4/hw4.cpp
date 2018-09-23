@@ -16,13 +16,20 @@ int main()
   const short IS_BASE_N_NUM = 3;
   const short CONVERT_TO_BASE_TEN = 4;
   const short QUIT_PROGRAM = 5;
-  const short DECIMAL_POWER = 10;
   const short MIN_INT = 0;
-  const short MAX_INT = 99999;
+  const long MAX_INT = 99999;
   const short MIN_BASE = 2; 
   const short MAX_BASE = 9;
   const short MAX_WHILE_COUNTER = 2;
-  const short FIND_MAX_INDEX = -1; 
+  const short RESET_COUNTER = 0;
+  const string ERR_MSG_BEG = "Error."; // how each error message begins
+
+  // These consts are used for converting number of base n to base 10
+  const short TEN_K_DIGIT_2_DEC_EXPONENT = 4;
+  const short THOUSAND_DIGIT_2_DEC_EXPONENT = 3;
+  const short HUNDREDS_DIGIT_2_DEC_EXPONENT = 2;
+  const short TENS_DIGIT_2_DEC_EXPONENT = 1;
+  const short ONES_DIGIT_2_DEC_EXPONENT = 0;
 
   /*
   Consts for dividing and modulating digit values
@@ -42,8 +49,8 @@ int main()
   bool quit = false;
   bool posIntDeclared = false; // ensure user has done option 1 first
   bool intBaseDeclared = false; // check user has done option 2, before 3 or 4
-  bool isBaseNum = true; // check if user entered int, is a base num of n
-  short positiveIntInput = 0;
+  bool isBaseNum; // check if user entered int, is a base num of n
+  long positiveIntInput = 0;
   short numberBase = 0;
   short tenThousandsDigit = 0;
   short thousandsDigit = 0;
@@ -51,13 +58,8 @@ int main()
   short tensDigit = 0;
   short onesDigit = 0;
   short menuChoice = 0;
-  short baseTenNum = 0;
-  short decimalValue = 0;
+  unsigned long decimalValue = 0;
   short counter = 0; // counts number of attempts for options 1 and 2
-  short i = 0; // incrementor for counting loops
-  short posIntLen = 0; // will hold length of user entered string for option 1
-  short posIntMaxInd = 0; // max index number for string
- 
 
   // Start of program
 
@@ -71,8 +73,8 @@ int main()
   do
   {
     // ask for the user's input using a menu. 
-    cout << "\tOptions" << endl;
-    cout << "-------" << endl;
+    cout << "\n" << "\tOptions" << endl;
+    cout << "---------------------------" << endl;
     cout << "1. Enter a non-negative integer, x [5-digit or less]" << endl;
     cout << "2. Enter an integer base, n. [2 <= n < 10]" << endl;
     cout << "3. Verify x is a valid base n number" << endl;
@@ -80,7 +82,7 @@ int main()
     cout << "5. Quit" << endl;
     
     // get user input
-    cout << "\nWhat would you like to do?"
+    cout << "\nWhat would you like to do? ";
     cin >> menuChoice; 
 
     // check all of the users different option
@@ -98,16 +100,17 @@ int main()
         to correct their mistake before sending them back to the menu.
         This adds up to 3 total attempts
         */ 
-        while(positiveIntInput < MIN_INT && positiveIntInput > MAX_INT && 
+        while((positiveIntInput < MIN_INT || positiveIntInput > MAX_INT) && 
         counter < MAX_WHILE_COUNTER)
         {
-          cout << "Error. Only enter positive numbers less than 9999: ";
+          cout << ERR_MSG_BEG << 
+          " Only enter positive numbers less than or equal to 9999: ";
           cin >> positiveIntInput;
           counter++;
         }
 
         // reset counter to 0
-        counter = 0;
+        counter = RESET_COUNTER;
 
         // set true to user performing option 1
         posIntDeclared = true;
@@ -123,7 +126,7 @@ int main()
         if(!posIntDeclared)
         {
           // if user has not done option 1, show error and return to menu
-          cout << "Error. Option 1 must be completed prior to options 2-4."
+          cout << ERR_MSG_BEG << " Option 1 must be completed prior to options 2."
           << endl;
         } 
         else 
@@ -138,19 +141,19 @@ int main()
           to correct their mistake before sending them back to the menu.
           This adds up to 3 total attempts
           */ 
-          while(numberBase < MIN_BASE && numberBase > MAX_BASE && 
+          while((numberBase < MIN_BASE || numberBase > MAX_BASE) && 
           counter < MAX_WHILE_COUNTER)
           {
-            cout << "Error. Enter only only number bases 2 through 9: ";
+            cout << ERR_MSG_BEG << " Enter only only number bases 2 through 9: ";
             cin >> numberBase;
             counter++;
           }
 
           // reset counter to 0
-          counter = 0;
+          counter = RESET_COUNTER;
 
           // set true to user performing option 2
-          int intBaseDeclared = true;
+          intBaseDeclared = true;
         }
 
         // go back to menu
@@ -160,14 +163,24 @@ int main()
       // user selects option 3
       case IS_BASE_N_NUM:
       {
-        // check option 1 and 2 have been successfully completed prior
-        if(!intBaseDeclared || !posIntDeclared)
+        // initiate isBaseNum
+        isBaseNum = false;
+
+        // check option 1 has been successfully completed prior
+        if(!posIntDeclared)
         {
           // if user hasn't done option 1 and 2, show error and return to menu
-          cout << "Error. Option 1 then option 2 must be completed prior to "
+          cout << ERR_MSG_BEG << " Option 1 and 2 must be completed prior to "
+          << "option 3." << endl;
+        } 
+        // check option 2 has been successfully completed prior
+        if(!intBaseDeclared)
+        {
+          // if user hasn't done option 2, show error and return to menu
+          cout << "Error. Option 2 must be completed prior to "
           << "option 3." << endl;
         }
-        else
+        if(posIntDeclared && intBaseDeclared)
         {                    
           /*
           find each digit value (left to right)
@@ -189,16 +202,11 @@ int main()
           check to make sure all of digits are less than the base number n
           done as nested if for readability and to not exceed column 80
           */
-          if(tenThousandsDigit < numberBase && thousandsDigit < numberBase)
+          if(tenThousandsDigit < numberBase && thousandsDigit < numberBase
+          && hundredsDigit < numberBase && tensDigit < numberBase &&
+          onesDigit < numberBase)
           {
-            if(hundredsDigit < numberBase && tensDigit < numberBase)
-            {
-              if(onesDigit < numberBase)
-              {
-                // set isBaseNum to true if all criteria are met
-                isBaseNum = true;
-              }
-            }
+            isBaseNum = true;
           }
 
           // tell user number is valid base n number is isBaseNum is true
@@ -208,11 +216,13 @@ int main()
             << " number." << endl;      
           }
 
-          // otherwise, tell them it is not valid
+          // otherwise, tell them it is not valid and to alter option 1 or 2
           else
           {
-            cout << positiveIntInput << " is NOT a valid base " << numberBase
+            cout << positiveIntInput << " is a NOT valid base " << numberBase
             << " number." << endl;
+            cout << "Please change your value for option 1 or 2, before " <<
+            "performing option 4." << endl;
           }
         }
 
@@ -223,23 +233,42 @@ int main()
       // user selects option 4
       case CONVERT_TO_BASE_TEN:
       {
-        // check option 1 and 2 have been successfully completed prior
-        if(!intBaseDeclared || !posIntDeclared)
+        // check option 1 has been successfully completed prior
+        if(!posIntDeclared)
         {
           // if user hasn't done option 1 and 2, show error and return to menu
-          cout << "Error. Option 1, then option 2 must be completed prior to "
-          <<" option 4." << endl;
+          cout << ERR_MSG_BEG << " Option 1 must be completed prior to "
+          << "option 4." << endl;
+        } 
+        // check option 2 has been successfully completed prior
+        if(!intBaseDeclared)
+        {
+          // if user hasn't done option 2, show error and return to menu
+          cout << ERR_MSG_BEG << " Option 2 must be completed prior to "
+          << "option 4." << endl;
         }
         // if option 1 and 2 are done, find the number's value in base ten
-        else
+        if (intBaseDeclared && posIntDeclared)
         {
-          // add up the values of all digits taken to power of ten
-          baseTenNum = pow(10, tenThousandsDigit) + pow(10, thousandsDigit) +
-          pow(10, hundredsDigit) + pow(10, tensDigit) + pow(10, onesDigit);
+          /* 
+          add up the values of all digits taken to power of ten
+          once they have been converted to base ten.
+          This is done by taking digit place times the power of 
+          the number base with the exponent ranging from 4 - 0.
+          This meets the criteria of 5 digits or less, because
+          4, 3, 2, 1, 0 is 5 digits
+          */
+          decimalValue = 
+          (tenThousandsDigit * pow(numberBase, TEN_K_DIGIT_2_DEC_EXPONENT)) +
+          (thousandsDigit * pow(numberBase, THOUSAND_DIGIT_2_DEC_EXPONENT)) + 
+          (hundredsDigit * pow(numberBase, HUNDREDS_DIGIT_2_DEC_EXPONENT)) +
+          (tensDigit * pow(numberBase, TENS_DIGIT_2_DEC_EXPONENT)) + 
+          (onesDigit * pow(numberBase, ONES_DIGIT_2_DEC_EXPONENT));
 
           // tell user the value
-          cout << "The number " << positiveIntInput << " = " << baseTenNum 
-          << " in base 10!" << endl;
+          cout << "In base number " << numberBase << " the number " << 
+          positiveIntInput << " = " << decimalValue 
+          << " in base 10." << endl;
         }
 
         // return to menu
@@ -248,15 +277,22 @@ int main()
 
       // user selects option 5
       case QUIT_PROGRAM:
-
+      {
         // change quit to true, so that the loop is exited
         quit = true;
+        break;
+      }
+
+      // catch any other input, which would be incorrect, using default
+      default: 
+        cout << ERR_MSG_BEG << " You must only select options 1-5." << endl;
         break;
     }
   } while(!quit); // exit loop if user enters quit option
 
   // goodbye message to the user
-  cout << "Thank you for using the number system program! Goodbye!" << endl;
+  cout << "\nThank you for using the number system program! Goodbye!\n" 
+  << endl;
 
   // Necessary return statement
   return 0;
