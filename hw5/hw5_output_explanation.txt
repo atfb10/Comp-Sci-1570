@@ -1,0 +1,18 @@
+// Programmer: ADAM FORESTIER          Date: 10/03/18
+// File: hw5_output_explanation.txt
+// Purpose: This file includes the explanation for the 
+//          tabular output produced from running the 
+//          file, hw5.cpp.
+
+Upon the user successfully entering all correct values for input;
+meaning all positive, whole numbers in which the upper boundaries
+are greater than or equal to lower boundaries, a table comprised
+of three columns is printed to the screen. The left-most column
+of the table is the number of animal types used in the creation 
+of the burger. The center column is the number of animal parts 
+used to create the burger. The right-most column is the projected
+profit that Krusty would make off of the burger sale. This profit
+is calculated using the number of number of animal types, the 
+left-most column, the number of animal parts, the center column,
+and plugging these values into Professor Frink's mathematical model
+that has been provided to us in the assignment description.  
