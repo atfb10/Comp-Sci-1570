@@ -1,0 +1,25 @@
+{
+  "files.associations": {
+    "iosfwd": "cpp",
+    "xstring": "cpp",
+    "fstream": "cpp",
+    "ostream": "cpp"
+  },
+  "cSpell.words": [
+    "burgermeister",
+    "burgermeister's",
+    "chol",
+    "counter",
+    "cust",
+    "fourth",
+    "klogger",
+    "koronary",
+    "m",
+    "meister",
+    "meister's",
+    "money",
+    "name",
+    "num",
+    "pickly"
+  ]
+}
